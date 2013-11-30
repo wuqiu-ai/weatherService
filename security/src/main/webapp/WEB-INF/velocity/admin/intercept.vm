@@ -1,0 +1,5 @@
+<div class="error_box">
+	<h1>无访问权限</h1>
+	<p>请联系管理员或登录!.</p>
+	<a href="$!{rc.contextPath}/admin/login.html" class="back_link btn btn-small">Go back</a>
+</div>

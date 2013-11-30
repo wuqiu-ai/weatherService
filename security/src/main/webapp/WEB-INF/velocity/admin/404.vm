@@ -1,0 +1,5 @@
+<div class="error_box">
+	<h1>404 Page/File not found</h1>
+	<p>该页面被移除，请联系管理员！</p>
+	<a href="javascript:history.back()" class="back_link btn btn-small">Go back</a>
+</div>
