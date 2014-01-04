@@ -18,6 +18,12 @@ public class MyTimestampPropertyEdit extends PropertyEditorSupport {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+		}else if(text.length()==10){
+			try {
+				setValue(new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse(text).getTime()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 		return;
 	}

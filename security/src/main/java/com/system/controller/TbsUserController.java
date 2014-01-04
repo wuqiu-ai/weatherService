@@ -2,11 +2,13 @@ package com.system.controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +16,18 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.system.model.TbsMenuModel;
 import com.system.model.TbsUserModel;
 import com.system.service.TbsMenuService;
 import com.system.service.TbsUserService;
+import com.system.util.core.DataTableParameter;
+import com.system.util.core.JsonUtil;
 import com.system.util.core.MethodUtil;
 import com.system.util.spring.MyTimestampPropertyEdit;
 import com.system.util.spring.SessionUtil;
@@ -50,39 +58,35 @@ public class TbsUserController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping("index.html")
-	public ModelAndView index(String id,ModelMap modelMap, HttpServletRequest request) {
-		List<String> buttons = new ArrayList<String>();
-		List<TbsUserModel> userlist = new ArrayList<TbsUserModel>();
-		TbsMenuModel tbsMenuModel=new TbsMenuModel();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("parentId", id);
-		map.put("orderCondition", "sortNumber");
-		System.out.println("id:" + id);
-		String isAdmin = (String) SessionUtil.getAttr(request, "isAdmin");
-		List<TbsMenuModel> list=null;
-		try {
-			if (null != isAdmin && isAdmin.equals("0")) {// 超管不需要验证权限
-				list = tbsMenuService.selectByMap(map);
-			} else {
-				list = tbsMenuService.selectByButtons(map);
-			}
-			if (list != null && list.size() > 0) {
-				for (int i = 0; i < list.size(); i++) {
-					tbsMenuModel = list.get(i);
-					String button = tbsMenuModel.getButton();
-					if (null != button && "null" != button) {
-						buttons.add(button);//.replaceAll("&apos;", "'").replaceAll("&quot;", "\"")
-					}
-				}
-			}
-			userlist = tbsUserService.selectByEntiry(new TbsUserModel());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		modelMap.addAttribute("userlist",userlist);
-		modelMap.addAttribute("buttons", buttons);
+	public ModelAndView index(String id,ModelMap modelMap, HttpServletRequest request,HttpServletResponse response) {
+		return new ModelAndView("admin/TbsUser/list");
+	}
+	
+	
+	/**
+	 * 列表数据
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("listData.html")
+	@ResponseBody
+	public String listData(TbsUserModel tbsUserModel,DataTableParameter parameter,
+			HttpServletRequest request,HttpServletResponse response) throws Exception{
 		
-		return new ModelAndView("admin/TbsUser/list", modelMap);
+		tbsUserModel.getPageUtil().setPaging(true);
+		tbsUserModel.getPageUtil().setLike(true);
+		tbsUserModel.getPageUtil().setOrderByCondition("createTime desc");
+		
+		tbsUserModel.getPageUtil().setPageSize(Integer.valueOf(parameter.getiDisplayLength()));
+		tbsUserModel.getPageUtil().setPageId(Integer.valueOf(parameter.getiDisplayStart()));
+		
+		List<TbsUserModel> listTbsUserModel = null;
+		listTbsUserModel = tbsUserService.selectByModel(tbsUserModel);
+				
+		String result = "[]";
+		result = CreateJsonStr(parameter.getsEcho(),tbsUserModel.getPageUtil().getRowCount(),tbsUserModel.getPageUtil().getRowCount(), listTbsUserModel);
+		
+		return result;
 	}
 	
 	
@@ -109,6 +113,28 @@ public class TbsUserController extends BaseController{
 	public ModelAndView show(ModelMap modelMap, HttpServletRequest request) {
 		
 		return new ModelAndView("admin/TbsUser/show", modelMap);
+	}
+	
+    /**
+     * 
+     * <br>
+     * <b>功能：</b>删除 TbsUserModel<br>
+     * @param ids
+     * @param response
+     */
+	@RequestMapping("del.html")
+	@ResponseBody
+	public String del(String[] ids,HttpServletResponse response){
+		System.out.println("del-ids:"+Arrays.toString(ids));
+		String result = "0";//0:失败  1：成功
+		try{
+			tbsUserService.deleteByPrimaryKeys(ids);
+			result = "1";
+		}catch(Exception e){
+			result = "0";
+			log.error(e);
+		}
+		return result;
 	}
 	
 }

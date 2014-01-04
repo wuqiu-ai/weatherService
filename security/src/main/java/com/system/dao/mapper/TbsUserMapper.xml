@@ -221,7 +221,7 @@
 			and password =  #{password}
 	    </if>
 		<if test="createTime != null " >
-			and createTime =  #{createTime}
+			and date_format(createTime,'%Y-%m-%d') = date_format(#{createTime},'%Y-%m-%d') 
 		</if>
 		<if test="ip != null and ip != '' " >
 			and ip =  #{ip}
@@ -258,7 +258,7 @@
 			and password like  &apos;%${password}%&apos;
 	    </if>
 		<if test="createTime != null " >
-			and createTime like  &apos;%${createTime}%&apos;
+			and date_format(createTime,'%Y-%m-%d') = date_format(#{createTime},'%Y-%m-%d') 
 		</if>
 		<if test="ip != null and ip != '' " >
 			and ip like  &apos;%${ip}%&apos;

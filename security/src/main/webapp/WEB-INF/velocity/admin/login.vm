@@ -57,13 +57,13 @@
                 <div class="control-group">
                     <div class="input-prepend">
                         <span class="add-on"><span class="icon-envelope"></span></span>
-                        <input type="text" id="inputEmail" name="username" placeholder="Email" class="validate[required]"/>
+                        <input type="text" id="inputEmail" name="username" placeholder="userName" class="validate[required]" value="admin"/>
                     </div>                
                 </div>
                 <div class="control-group">
                     <div class="input-prepend">
                         <span class="add-on"><span class="icon-lock"></span></span>
-                        <input type="password" id="inputPassword" name="password" placeholder="Password" class="validate[required]"/>
+                        <input type="password" id="inputPassword" name="password" placeholder="Password" class="validate[required]" value="123456"/>
                     </div>
                 </div>
                 <div class="row-fluid">

@@ -130,6 +130,7 @@ public class PageUtil {
 	public Integer getPageTail() {
 		return pageTail;
 	}
+	
 
 	public void setPageTail(Integer pageTail) {
 		this.pageTail = pageTail;

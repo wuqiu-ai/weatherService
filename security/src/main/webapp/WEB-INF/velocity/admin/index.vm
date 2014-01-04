@@ -41,12 +41,17 @@
     <script type='text/javascript' src='$!{main_static_url}/static/js/plugins/pnotify/jquery.pnotify.min.js'></script>
     <script type='text/javascript' src='$!{main_static_url}/static/js/plugins/ibutton/jquery.ibutton.min.js'></script>
     <script type='text/javascript' src='$!{main_static_url}/static/js/plugins/scrollup/jquery.scrollUp.min.js'></script>
+	<script type='text/javascript' src='$!{main_static_url}/static/js/plugins/My97DatePicker/WdatePicker.js'></script>
     <script type='text/javascript' src='$!{main_static_url}/static/js/cookies.js'></script>
     <script type='text/javascript' src='$!{main_static_url}/static/js/actions.js'></script>
     <script type='text/javascript' src='$!{main_static_url}/static/js/charts.js'></script>
     <script type='text/javascript' src='$!{main_static_url}/static/js/plugins.js'></script>
     <script type='text/javascript' src='$!{main_static_url}/static/js/settings.js'></script>
     
+	<link href="$!{main_static_url}/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />  
+	<script type='text/javascript' src='$!{main_static_url}/static/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js'></script>
+	<script type='text/javascript' src='$!{main_static_url}/static/js/plugins/datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js'></script>
+
 </head>
 <body>
     <div class="wrapper"> 
@@ -139,10 +144,21 @@
             <ul class="navigation">            
                 <li class="active">
                     <a href="index.html">
-                        <span class="isw-grid"></span><span class="text">Dashboard</span>
+                        <span class="isw-list"></span><span class="text">Dashboard</span>
                     </a>
                 </li>
+				<li class="openable">
+                    <a href="javascript:void(0)">
+                        <span class="isw-grid"></span><span class="text">菜单</span>
+                    </a>
+					<ul>
+						<li>
+							<a href="javascript:void(0)" class="clickMenu" name="$!{rc.contextPath}/admin/TbsUser/index.html"><span class="icon-th"></span><span class="text">用户管理</span></a>
+						</li>
+					</ul>
+                </li>
 				
+				<!--
 				#set ($i=1)
 					#foreach( $menu in $listTbsMenuModel)
 						<li class="openable">
@@ -159,7 +175,7 @@
 						</li>
 						#set($i=$i+1)
 					#end
-				
+				-->
             </ul>
 
             <div class="dr"><span></span></div>
